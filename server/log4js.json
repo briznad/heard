@@ -1,0 +1,11 @@
+{
+  "appenders": [
+    {
+      "type": "file",
+      "filename": "../logs/APIserver.log",
+      "maxLogSize": 100000,
+      "backups": 20,
+      "pollInterval": 15
+    }
+  ]
+}

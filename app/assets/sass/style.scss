@@ -1,0 +1,39 @@
+/* imports */
+
+// plugins
+@import "plugins/normalize";
+
+// helpers
+@import "helpers/fonts";
+@import "helpers/settings";
+@import "helpers/icons";
+@import "helpers/mixins";
+@import "helpers/partials";
+@import "helpers/base_styles";
+
+// partials
+@import "partials/header";
+@import "partials/main";
+@import "partials/footer";
+@import "partials/shared_styles";
+
+// modules
+@import "modules/homepage";
+@import "modules/meta_list";
+@import "modules/contact";
+
+/* /imports */
+
+/* responsive media queries */
+
+@media (min-width: 1025px) { /* if larger than typical tablet display, aka desktop styles */
+
+
+
+}
+
+@media (max-width: 480px) { /* if smaller or equal to typical phone display, aka phone styles */
+
+
+
+}

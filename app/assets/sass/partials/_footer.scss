@@ -1,0 +1,43 @@
+// bottom row
+
+.bottom-row {
+	font-size: em(11);
+}
+
+.footer-nav-item {
+	margin-left: em(48, 11);
+
+	&:first-child {
+		margin-left: 0;
+	}
+}
+
+.social-link-item {
+	@extend .footer-nav-item;
+	margin-left: em(12, 11);
+}
+
+.social-link {
+	@extend %icon;
+	font-size: em(15, 11);
+
+	&:hover {
+		text-decoration: none;
+	}
+
+	@each $site in instagram, facebook, twitter {
+	  &.#{$site} {
+	    @extend %icon-#{$site};
+	  }
+	}
+}
+
+.newsletter {
+	float: right;
+
+	[type="email"] {
+		min-width: em(146, 11);
+	}
+}
+
+// /bottom row

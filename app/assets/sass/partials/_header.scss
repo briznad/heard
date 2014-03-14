@@ -1,0 +1,97 @@
+// top row
+.top-row {
+	position: relative;
+	margin-bottom: em(20);
+}
+
+.top-nav-list {
+	text-transform: lowercase;
+
+	.page,
+	.logo,
+	.current-edition {
+		width: 16%;
+	}
+
+	.page {
+		text-align: right;
+	}
+
+	.current-edition {
+		//
+	}
+
+	.collaborators {
+		width: 49%;
+		text-align: right;
+		text-transform: lowercase;
+	}
+}
+
+.logo {
+	font-size: em(25);
+	font-family: Geneva, Tahoma, Verdana, sans-serif;
+	letter-spacing: normal;
+
+	a {
+		color: $color-black;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}
+
+.logo-open,
+.logo-close {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: em(42, 25);
+}
+
+.collaborators {
+	.dropdown-trigger {
+		&:hover,
+		&:focus {
+			~ .dropdown {
+				display: block;
+			}
+		}
+	}
+
+	.dropdown {
+		position: absolute;
+		display: none;
+
+		&:hover,
+		&:focus {
+			display: block;
+		}
+	}
+}
+
+.collaborators-list {
+	right: -0.5em;
+	text-align: right;
+	background-color: $color-white;
+}
+
+.collaborators-list-item {
+	padding: 0 0.5em 0.25em;
+
+	&:first-child {
+		padding-top: 0.5em;
+	}
+}
+
+// .about {
+// 	.description-text {
+// 		max-width: $golden-ratio;
+// 	}
+// }
+
+// .edition {
+// 	.description-text {
+// 		margin-left: 25%;
+// 	}
+// }
+
+// /top row

@@ -1,0 +1,27 @@
+// homepage styles
+.homepage-container {
+	background-image: url(http://lorempixel.com/910/450);
+	background-size: cover;
+  position: relative;
+}
+
+.window-display-list-item {
+  display: block;
+  position: absolute;
+
+  // DEV
+  a {
+    display: block;
+    color: $color-white;
+    text-decoration: none;
+    padding: em(10);
+    background-color: rgba(purple, 0.7);
+    font-size: 1.2em;
+    font-weight: bold;
+    transition: background-color 250ms;
+
+    &:hover {
+      background-color: rgba(lime, 0.7);
+    }
+  }
+}
