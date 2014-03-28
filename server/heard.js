@@ -1,33 +1,60 @@
-var http = require('http');
 
-http.createServer(function (req, http_res) {
-  http_res.writeHead(200, {'Content-Type': 'text/plain'});
+console.log('\nHeard API server is warming up...\n');
 
-  var response = '';
+/**
+ * dependencies and what have you
+ */
 
-  var cradle = require('cradle');
+// load general depencies / global vars
+var settings = {
+  catchErrors: false,
+  http_listen_port: 4327
+},
+  _ = require('underscore'),
+  express = require('express'),
+  cradle = require('cradle'),
+  app = express(),
+  conn = new (cradle.Connection)('127.0.0.1', 5984, { secure: false, auth: { username: 'heard', password: 'heardpass' } }); // load cradle (couch API wrapper) dependencies / configs
 
-  var connection = new(cradle.Connection)('http://127.0.0.1', 5984, {
-      auth: { username: 'heard', password: 'twavex52' }
+// load express middleware
+app.use(express.bodyParser());
+app.use(express.cookieParser());
+
+// locked & loaded!
+console.log('\n\n                        #####################\n                         H e a r d  -  A P I\n                        #####################\n');
+
+/**
+ * load routes
+ */
+// test
+app.get('/test', function(req, res) {
+  console.log('OMG, a request!');
+  console.info('request made for:\n' + req.url);
+  // respond!!
+  res.json({ heardSays: 'serving test!' });
+});
+
+// Hello World!
+app.get('/', function(req, res) {
+  console.log('OMG, a request!');
+  console.info('request made for:\n' + req.url);
+  // respond!!
+  res.json({ heardSays: 'Hello World!' });
+});
+
+/**
+ * init and load helper functions
+ */
+
+// have app listen
+app.listen(settings.http_listen_port);
+
+// server started
+console.info('server started at http://127.0.0.1:' + settings.http_listen_port);
+
+// ERROR catcher
+if (settings.catchErrors) {
+  process.on('uncaughtException', function(err) {
+    console.log('Caught the following exception: ' + logNewLineResultsIndent + err);
   });
-
-  var db = connection.database('heard');
-
-  db.save('document_key', {
-      name: 'A Funny Name'
-  }, function (err, res) {
-      if (err) {
-          // Handle error
-          response += ' SAVE ERROR: Could not save record!!\n';
-      } else {
-          // Handle success
-          response += ' SUCESSFUL SAVE\n';
-      }
-
-      db.get('document_key', function (err, doc) {
-          response += ' DOCUMENT: ' + doc + '\n';
-          http_res.end(response);
-      });
-  });
-
-}).listen(8071);
+}
