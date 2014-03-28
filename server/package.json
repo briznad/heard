@@ -1,0 +1,11 @@
+{
+  "name" : "HeardAPI",
+  "description" : "API server for Heard App.",
+  "author" : "Brad Mallow <brad.mallow@gmail.com>",
+  "repository" : {
+    "type": "git",
+    "url": "git://github.com/briznad/heard"
+  },
+  "main" : "heard.coffee",
+  "version" : "0.0.1"
+}
