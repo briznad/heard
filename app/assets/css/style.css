@@ -1,3 +1,6 @@
+@charset "UTF-8";
+
+
 /* imports */
 
 /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
@@ -828,7 +831,8 @@ table {
   }
 }
 
-.social-link:before {
+.social-link:before,
+.lightbox-close:before {
   line-height: 1em;
   font-family: 'fontello';
   font-style: normal;
@@ -849,7 +853,7 @@ table {
 }
 
 .social-link.twitter:before {
-  content: '\e801';
+  content: '\e800';
 }
 
 @media -sass-debug-info {
@@ -863,7 +867,7 @@ table {
 }
 
 .social-link.facebook:before {
-  content: '\e800';
+  content: '\e801';
 }
 
 @media -sass-debug-info {
@@ -877,7 +881,35 @@ table {
 }
 
 .social-link.instagram:before {
-  content: '\e807';
+  content: '\e802';
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/helpers\/_icons\.scss;
+  }
+
+  line {
+    font-family: \0000325;
+  }
+}
+
+.lightbox-close {
+  /* '' */
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/helpers\/_icons\.scss;
+  }
+
+  line {
+    font-family: \0000326;
+  }
+}
+
+.lightbox-close:before {
+  content: '\e803';
 }
 
 /* mixins */
@@ -961,10 +993,16 @@ table {
 
 .clearfix:before,
 [class*="-row"]:before,
+.item-edition-container:before,
+.item-edition-container .additional-media:before,
 .contact-container:before,
+.lightbox-container:before,
 .clearfix:after,
 [class*="-row"]:after,
-.contact-container:after {
+.item-edition-container:after,
+.item-edition-container .additional-media:after,
+.contact-container:after,
+.lightbox-container:after {
   content: " ";
   display: table;
 }
@@ -981,7 +1019,10 @@ table {
 
 .clearfix:after,
 [class*="-row"]:after,
-.contact-container:after {
+.item-edition-container:after,
+.item-edition-container .additional-media:after,
+.contact-container:after,
+.lightbox-container:after {
   clear: both;
 }
 
@@ -1085,7 +1126,6 @@ table {
 
 .top-row {
   position: relative;
-  margin-bottom: 1.42857em;
 }
 
 @media -sass-debug-info {
@@ -1094,12 +1134,13 @@ table {
   }
 
   line {
-    font-family: \000037;
+    font-family: \000036;
   }
 }
 
 .top-nav-list {
   text-transform: lowercase;
+  text-align: center;
 }
 
 @media -sass-debug-info {
@@ -1138,12 +1179,30 @@ table {
   }
 
   line {
-    font-family: \0000324;
+    font-family: \0000320;
   }
 }
 
-.top-nav-list .collaborators {
-  width: 49%;
+.top-nav-list .current-edition {
+  text-align: left;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_header\.scss;
+  }
+
+  line {
+    font-family: \0000325;
+  }
+}
+
+.top-nav-list .collaborators,
+.top-nav-list .where {
+  position: absolute;
+  top: 27px;
+  right: 0;
+  width: 33%;
   text-align: right;
   text-transform: lowercase;
 }
@@ -1154,7 +1213,7 @@ table {
   }
 
   line {
-    font-family: \0000331;
+    font-family: \0000335;
   }
 }
 
@@ -1170,7 +1229,7 @@ table {
   }
 
   line {
-    font-family: \0000336;
+    font-family: \0000340;
   }
 }
 
@@ -1184,7 +1243,7 @@ table {
   }
 
   line {
-    font-family: \0000338;
+    font-family: \0000342;
   }
 }
 
@@ -1198,7 +1257,7 @@ table {
   }
 
   line {
-    font-family: \0000345;
+    font-family: \0000349;
   }
 }
 
@@ -1214,7 +1273,37 @@ table {
   }
 
   line {
-    font-family: \0000354;
+    font-family: \0000355;
+  }
+}
+
+.collaborators .dropdown-trigger {
+  display: inline-block;
+  padding-bottom: 0.333em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_header\.scss;
+  }
+
+  line {
+    font-family: \0000360;
+  }
+}
+
+.collaborators .dropdown-trigger:hover,
+.collaborators .dropdown-trigger:focus {
+  text-decoration: none;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_header\.scss;
+  }
+
+  line {
+    font-family: \0000363;
   }
 }
 
@@ -1229,7 +1318,7 @@ table {
   }
 
   line {
-    font-family: \0000360;
+    font-family: \0000369;
   }
 }
 
@@ -1244,7 +1333,7 @@ table {
   }
 
   line {
-    font-family: \0000365;
+    font-family: \0000374;
   }
 }
 
@@ -1259,42 +1348,44 @@ table {
   }
 
   line {
-    font-family: \0000371;
-  }
-}
-
-.collaborators-list {
-  right: -0.5em;
-  text-align: right;
-  background-color: white;
-}
-
-@media -sass-debug-info {
-  filename {
-    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_header\.scss;
-  }
-
-  line {
-    font-family: \0000377;
-  }
-}
-
-.collaborators-list-item {
-  padding: 0 0.5em 0.25em;
-}
-
-@media -sass-debug-info {
-  filename {
-    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_header\.scss;
-  }
-
-  line {
     font-family: \0000380;
   }
 }
 
+.collaborators-list {
+  padding: 0.5em;
+  right: -0.5em;
+  text-align: right;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid black;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_header\.scss;
+  }
+
+  line {
+    font-family: \0000388;
+  }
+}
+
+.collaborators-list-item {
+  margin-top: 0.25em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_header\.scss;
+  }
+
+  line {
+    font-family: \0000391;
+  }
+}
+
 .collaborators-list-item:first-child {
-  padding-top: 0.5em;
+  margin-top: 0;
 }
 
 @media -sass-debug-info {
@@ -1308,9 +1399,7 @@ table {
 }
 
 .middle-row {
-  margin-bottom: 1.42857em;
-  padding-bottom: 1.42857em;
-  border-bottom: 1px solid #aaa;
+  margin: 5.71429em 0;
 }
 
 @media -sass-debug-info {
@@ -1320,37 +1409,6 @@ table {
 
   line {
     font-family: \000038;
-  }
-}
-
-.root .middle-row,
-.contact .middle-row {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-@media -sass-debug-info {
-  filename {
-    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_middle_row\.scss;
-  }
-
-  line {
-    font-family: \0000314;
-  }
-}
-
-.editions .middle-row,
-.collaborators .middle-row {
-  padding-bottom: 0;
-}
-
-@media -sass-debug-info {
-  filename {
-    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_middle_row\.scss;
-  }
-
-  line {
-    font-family: \0000321;
   }
 }
 
@@ -1365,22 +1423,7 @@ table {
   }
 
   line {
-    font-family: \0000326;
-  }
-}
-
-.media-container,
-.homepage-container {
-  border: 2px solid black;
-}
-
-@media -sass-debug-info {
-  filename {
-    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_middle_row\.scss;
-  }
-
-  line {
-    font-family: \0000331;
+    font-family: \0000313;
   }
 }
 
@@ -1394,7 +1437,7 @@ table {
   }
 
   line {
-    font-family: \0000338;
+    font-family: \0000320;
   }
 }
 
@@ -1413,7 +1456,7 @@ table {
   }
 
   line {
-    font-family: \0000345;
+    font-family: \0000327;
   }
 }
 
@@ -1449,7 +1492,7 @@ table {
 
 .footer-nav-item,
 .social-link-item {
-  margin-left: 4.36364em;
+  margin-left: 2.687%;
 }
 
 @media -sass-debug-info {
@@ -1477,6 +1520,20 @@ table {
   }
 }
 
+.social-links {
+  padding: 0 1em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_footer\.scss;
+  }
+
+  line {
+    font-family: \0000319;
+  }
+}
+
 .social-link-item {
   margin-left: 1.09091em;
 }
@@ -1487,7 +1544,7 @@ table {
   }
 
   line {
-    font-family: \0000320;
+    font-family: \0000324;
   }
 }
 
@@ -1501,7 +1558,7 @@ table {
   }
 
   line {
-    font-family: \0000324;
+    font-family: \0000328;
   }
 }
 
@@ -1515,7 +1572,7 @@ table {
   }
 
   line {
-    font-family: \0000335;
+    font-family: \0000339;
   }
 }
 
@@ -1529,12 +1586,27 @@ table {
   }
 
   line {
-    font-family: \0000338;
+    font-family: \0000342;
   }
 }
 
 .newsletter [type="email"] {
   min-width: 13.27273em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_footer\.scss;
+  }
+
+  line {
+    font-family: \0000346;
+  }
+}
+
+.newsletter [type="submit"] {
+  position: relative;
+  top: -1px;
 }
 
 /* general page styles */
@@ -1565,9 +1637,9 @@ html {
 }
 
 body {
-  width: 940px;
+  width: 1000px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 2.85714em 1.42857em;
   -webkit-font-smoothing: antialiased;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 300;
@@ -1658,7 +1730,26 @@ input {
   }
 
   line {
-    font-family: \0000346;
+    font-family: \0000341;
+  }
+}
+
+[type="submit"] {
+  border-radius: 0;
+  border-style: solid;
+  border-width: 1px;
+  background-color: white;
+  text-transform: lowercase;
+  letter-spacing: 0.25em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/partials\/_shared_styles\.scss;
+  }
+
+  line {
+    font-family: \0000355;
   }
 }
 
@@ -1678,7 +1769,7 @@ dd {
   }
 
   line {
-    font-family: \0000351;
+    font-family: \0000360;
   }
 }
 
@@ -1693,7 +1784,7 @@ li {
   }
 
   line {
-    font-family: \0000357;
+    font-family: \0000366;
   }
 }
 
@@ -1770,6 +1861,232 @@ li {
 
 .window-display-list-item a:hover {
   background-color: rgba(0, 255, 0, 0.7);
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_full_width_image\.scss;
+  }
+
+  line {
+    font-family: \000031;
+  }
+}
+
+.full-width-image-container {
+  position: relative;
+  min-height: 38.57143em;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_full_width_image\.scss;
+  }
+
+  line {
+    font-family: \000038;
+  }
+}
+
+.overlay-container {
+  position: absolute;
+  left: 61.458333333333%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  max-width: 18.57143em;
+  padding: 2.85714em;
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_full_width_image\.scss;
+  }
+
+  line {
+    font-family: \0000318;
+  }
+}
+
+.overlay-title {
+  font-size: 1em;
+  text-transform: uppercase;
+  margin-bottom: 2.14286em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_full_width_image\.scss;
+  }
+
+  line {
+    font-family: \0000324;
+  }
+}
+
+.directions-link {
+  display: block;
+  padding-top: 1.42857em;
+  text-transform: lowercase;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \000034;
+  }
+}
+
+.item-edition-container .sidebar-text {
+  float: right;
+  max-width: 280px;
+  max-height: 510px;
+  overflow-y: scroll;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000312;
+  }
+}
+
+.item-edition-container .primary-media,
+.item-edition-container .additional-media-wrapper {
+  width: 650px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000316;
+  }
+}
+
+.item-edition-container .primary-media {
+  height: 365px;
+  margin-bottom: 20px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000321;
+  }
+}
+
+.item-edition-container .primary-media iframe,
+.item-edition-container .primary-media .primary-image {
+  width: 100%;
+  height: 100%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000328;
+  }
+}
+
+.item-edition-container .primary-image,
+.item-edition-container .thumbnail-image {
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000333;
+  }
+}
+
+.item-edition-container .primary-image {
+  display: block;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000338;
+  }
+}
+
+.item-edition-container .additional-media-wrapper,
+.item-edition-container .thumbnail-image {
+  height: 125px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000342;
+  }
+}
+
+.item-edition-container .additional-media-wrapper {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000351;
+  }
+}
+
+.item-edition-container .thumbnail-image {
+  float: left;
+  width: 175px;
+  margin-left: 15px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_item_edition\.scss;
+  }
+
+  line {
+    font-family: \0000356;
+  }
+}
+
+.item-edition-container .thumbnail-image:first-child {
+  margin-left: 0;
 }
 
 @media -sass-debug-info {
@@ -2016,12 +2333,9 @@ li {
 }
 
 .form-container [type="submit"] {
-  border: none;
   position: absolute;
   right: 1.57895em;
   bottom: 1.05263em;
-  color: white;
-  text-transform: uppercase;
   font-size: 1.35714em;
   padding: 0.31579em 0.52632em;
 }
@@ -2032,12 +2346,140 @@ li {
   }
 
   line {
-    font-family: \0000386;
+    font-family: \0000383;
   }
 }
 
 #preferPhone {
   margin-left: 1.07143em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_lightbox\.scss;
+  }
+
+  line {
+    font-family: \000031;
+  }
+}
+
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_lightbox\.scss;
+  }
+
+  line {
+    font-family: \0000311;
+  }
+}
+
+.lightbox-overlay:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_lightbox\.scss;
+  }
+
+  line {
+    font-family: \0000319;
+  }
+}
+
+.lightbox-container {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  max-width: 85%;
+  max-height: 85%;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_lightbox\.scss;
+  }
+
+  line {
+    font-family: \0000329;
+  }
+}
+
+.lightbox-img,
+.lightbox-close {
+  -webkit-box-shadow: 0 1px 7px black;
+  box-shadow: 0 1px 7px black;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_lightbox\.scss;
+  }
+
+  line {
+    font-family: \0000333;
+  }
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  border: 1.07143em solid white;
+  border-radius: 0.28571em;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_lightbox\.scss;
+  }
+
+  line {
+    font-family: \0000340;
+  }
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  display: block;
+  width: 30px;
+  line-height: 26px;
+  border: 2px solid white;
+  border-radius: 50%;
+  text-align: center;
+  background-color: black;
+  color: white;
+  font-size: 20px;
+}
+
+@media -sass-debug-info {
+  filename {
+    font-family: file\:\/\/\/Users\/briznad\/Downloads\/aWindowGDrive\/website\/site\/assets\/sass\/modules\/_lightbox\.scss;
+  }
+
+  line {
+    font-family: \0000357;
+  }
+}
+
+.lightbox-close:hover {
+  text-decoration: none;
 }
 
 /* /imports */

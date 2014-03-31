@@ -1,11 +1,11 @@
 // top row
 .top-row {
 	position: relative;
-	margin-bottom: em(20);
 }
 
 .top-nav-list {
 	text-transform: lowercase;
+	text-align: center;
 
 	.page,
 	.logo,
@@ -18,11 +18,15 @@
 	}
 
 	.current-edition {
-		//
+		text-align: left;
 	}
 
-	.collaborators {
-		width: 49%;
+	.collaborators,
+	.where {
+		position: absolute;
+		top: 27px;
+		right: 0;
+		width: 33%;
 		text-align: right;
 		text-transform: lowercase;
 	}
@@ -49,8 +53,13 @@
 
 .collaborators {
 	.dropdown-trigger {
+		display: inline-block;
+		padding-bottom: 0.333em;
+
 		&:hover,
 		&:focus {
+			text-decoration: none;
+
 			~ .dropdown {
 				display: block;
 			}
@@ -69,29 +78,19 @@
 }
 
 .collaborators-list {
+	padding: 0.5em;
 	right: -0.5em;
 	text-align: right;
-	background-color: $color-white;
+	background-color: rgba($color-white, 0.8);
+	border: 1px solid $color-black;
 }
 
 .collaborators-list-item {
-	padding: 0 0.5em 0.25em;
+	margin-top: 0.25em;
 
 	&:first-child {
-		padding-top: 0.5em;
+		margin-top: 0;
 	}
 }
-
-// .about {
-// 	.description-text {
-// 		max-width: $golden-ratio;
-// 	}
-// }
-
-// .edition {
-// 	.description-text {
-// 		margin-left: 25%;
-// 	}
-// }
 
 // /top row

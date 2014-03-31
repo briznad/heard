@@ -6,9 +6,9 @@ html {
 }
 
 body {
-	width: 940px;
+	width: 1000px;
 	margin: 0 auto;
-	padding: 15px;
+	padding: em(40) em(20);
 	-webkit-font-smoothing: antialiased;
 	font-family: $font-normal;
 	font-weight: 300;
@@ -36,6 +36,15 @@ h1, h2, h3, h4, h5, h6 {
 
 input {
 	letter-spacing: inherit;
+}
+
+[type="submit"] {
+	border-radius: 0;
+	border-style: solid;
+	border-width: 1px;
+	background-color: $color-white;
+	text-transform: lowercase;
+	letter-spacing: 0.25em;
 }
 
 p,

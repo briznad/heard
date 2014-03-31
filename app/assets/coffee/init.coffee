@@ -1,11 +1,11 @@
-aWindow = aWindow or {}
+heardApp = heardApp or {}
 
-aWindow.init = do ->
+heardApp.init = do ->
   'use strict'
 
-  # init storage
-  aWindow.store = aWindow.store || aWindow.DB('heardApp');
-
-  aWindow.modelBuildr.init ->
-    # load router controller
-    do aWindow.router
+  # load templates
+  heardApp.template.init ->
+    # retrieve json and build document model
+    heardApp.modelBuildr.init ->
+      # load router controller
+      do heardApp.router.init

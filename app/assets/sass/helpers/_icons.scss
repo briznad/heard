@@ -11,13 +11,17 @@
 }
 
 %icon-twitter {
-  &:before { content: '\e801'; } // ''
+  &:before { content: '\e800'; } // ''
 }
 
 %icon-facebook {
-  &:before { content: '\e800'; } // ''
+  &:before { content: '\e801'; } // ''
 }
 
 %icon-instagram {
-  &:before { content: '\e807'; } // ''
+  &:before { content: '\e802'; } // ''
+}
+
+%icon-cancel {
+  &:before { content: '\e803'; } /* '' */
 }

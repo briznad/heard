@@ -1,63 +1,36 @@
-aWindow = aWindow or {}
+heardApp = heardApp or {}
 
-aWindow.router = ->
+heardApp.router = do ->
+  'use strict'
 
-  beforePageRefresh = ->
-    # remove previous body classes
-    if aWindow.model.settings.currentPage
-      aWindow.cache.$body.removeClass aWindow.model.settings.currentPage.type + ' ' + aWindow.model.settings.currentPage.titleNormalized
+  init = (callback = ->) ->
+    do initRoutes
+    do _testHash
+    do callback
 
-  updateCurrentPage = (type, titleNormalized) ->
-    # update model with current page info
-    aWindow.model.settings.currentPage = _.extend aWindow.model.settings.currentPage or {},
-      type:             type
-      titleNormalized:  titleNormalized
+  initRoutes = ->
+    routes = Davis ->
+      @configure (config) ->
+        config.generateRequestOnPageLoad = true
 
-    # update page title
-    pageTitle = if type isnt 'meta' and titleNormalized isnt 'root' then '{a window] | ' + type + ' | ' + aWindow.model[type][titleNormalized].title else if titleNormalized is 'root' then '{a window]' else '{a window] | ' + aWindow.model[type][titleNormalized].title
+      @before heardApp.updateView.beforeUpdate
 
-    # set page title
-    aWindow.cache.$title.text pageTitle
+      # @get '/', ->
+      #   do heardApp.updateView.update 'meta', 'root'
 
-    # update body classes
-    aWindow.cache.$body.addClass type + ' ' + titleNormalized
+      # @get '/:titleNormalized', (req) ->
+      #   heardApp.updateView.update 'meta', req.params.titleNormalized
 
-    # render new view
-    $('#primaryContainer').html aWindow.template.primary
-      data:                   aWindow.model
-      currentType:            type
-      currentTitleNormalized: titleNormalized
-      currentPageTitle:       pageTitle
+      # @get '/:type/:titleNormalized', (req) ->
+      #   heardApp.updateView.update req.params.type, req.params.titleNormalized
 
-  sendContactForm = (req) ->
-    contactReq = $.ajax
-      type: 'POST'
-      url: req.path
-      data: req.params
-      success: (data) ->
-        console.log data
-      error: (data) ->
-        console.log data
+      # @get '/:type/:titleNormalized/purchase', (req) ->
+      #   heardApp.updateView.update req.params.type, req.params.titleNormalized, true
 
-  routes = Davis ->
-    @configure (config) ->
-      config.generateRequestOnPageLoad = true
+      @post '/create', heardApp.updateModel.create
 
-    @before beforePageRefresh
+  _testHash = ->
+    if location.hash
+      Davis.location.assign new Davis.Request location.hash.replace /^#/, ''
 
-    @get '/', ->
-      updateCurrentPage 'meta', 'root'
-
-    @get '/:titleNormalized', (req) ->
-      updateCurrentPage 'meta', req.params.titleNormalized
-
-    @get '/:type/:titleNormalized', (req) ->
-      updateCurrentPage req.params.type, req.params.titleNormalized
-
-    @post '/contact', sendContactForm
-
-  # init = ->
-    # aWindow.log @
-
-  # init:   init
-  routes: routes
+  init: init

@@ -1,12 +1,13 @@
-aWindow = aWindow or {}
+heardApp = heardApp or {}
 
-aWindow.modelBuildr = do ->
+heardApp.modelBuildr = do ->
   'use strict'
 
   init = (callback) ->
-    getData callback
+    # _getData callback
+    do callback
 
-  getData = (callback) ->
+  _getData = (callback) ->
     # ID of current CMS spreadsheet
     contentSpreadsheetID = '0AvY0yhzqHzgSdDRjV1UzcUxfQnRmSDNKcEhkUDlKeHc'
 
@@ -22,7 +23,7 @@ aWindow.modelBuildr = do ->
 
     # uh-oh, something went wrong
     request.fail (data) ->
-      aWindow.model =
+      heardApp.model =
         status: 'error'
         description: 'unable to talk to Google'
         data: data
@@ -31,8 +32,8 @@ aWindow.modelBuildr = do ->
 
   createCleanModel = (data, callback) ->
 
-    # add model object to aWindow
-    aWindow.model = {}
+    # add model object to heardApp
+    heardApp.model = {}
 
     # sort each page type
     sortRawInput = (obj) ->
@@ -46,14 +47,16 @@ aWindow.modelBuildr = do ->
       switch key
         when 'edition'
           # save the last processed edition as the current edition
-          aWindow.model.settings = aWindow.model.settings or {}
-          aWindow.model.settings.currentEdition = tempCleanObj.normalized
+          heardApp.model.settings = heardApp.model.settings or {}
+          heardApp.model.settings.currentEdition = tempCleanObj.normalized
 
           tempCleanObj = _.extend tempCleanObj,
             items:          [] # create container array, to be populated in post-processing
             collaborators:  [] # create container array, to be populated in post-processing
-            location:       obj['gsx$edition-location']['$t'].replace(/\n/g, '<br/>')
-            hours:          obj['gsx$edition-hours']['$t'].replace(/\n/g, '<br/>')
+            location:
+              address:        obj['gsx$edition-location-address']['$t']
+              media:          obj['gsx$edition-location-media']['$t']
+              description:    obj['gsx$edition-location-description']['$t'].replace(/\n/g, '<br/>')
             contact:
               email:          obj['gsx$edition-contact-email']['$t']
               phone:          obj['gsx$edition-contact-phone']['$t']
@@ -65,23 +68,25 @@ aWindow.modelBuildr = do ->
 
         when 'item'
           tempCleanObj = _.extend tempCleanObj,
-            creator:        obj['gsx$item-creator']['$t']
-            edition:        obj['gsx$item-edition']['$t']
-            price:          obj['gsx$item-price']['$t']
-            madeToOrder:    if obj['gsx$item-madetoorder']['$t'] is 'TRUE' then true else false
-            productionRun:  obj['gsx$item-productionrun']['$t']
-            timeToShip:     obj['gsx$item-timetoship']['$t']
+            creator:            obj['gsx$item-creator']['$t']
+            edition:            obj['gsx$item-edition']['$t']
+            additionalMedia:    if obj['gsx$item-additionalmedia']['$t'] is '' then false else obj['gsx$item-additionalmedia']['$t'].replace(/,\s/g, ',').split(',')
+            purchasePageMedia:  obj['gsx$item-purchasepage-media']['$t']
+            price:              obj['gsx$item-price']['$t']
+            madeToOrder:        if obj['gsx$item-madetoorder']['$t'] is 'TRUE' then true else false
+            productionRun:      obj['gsx$item-productionrun']['$t']
+            timeToShip:         obj['gsx$item-timetoship']['$t']
             windowDisplay:
-              media:          obj['gsx$item-windowdisplaymedia']['$t']
+              media:              obj['gsx$item-windowdisplaymedia']['$t']
               position:
-                top:            if obj['gsx$item-windowdisplaymediaposition-top']['$t'] isnt '' then obj['gsx$item-windowdisplaymediaposition-top']['$t'] else 0
-                left:           if obj['gsx$item-windowdisplaymediaposition-left']['$t'] isnt '' then obj['gsx$item-windowdisplaymediaposition-left']['$t'] else 0
+                top:                if obj['gsx$item-windowdisplaymediaposition-top']['$t'] isnt '' then obj['gsx$item-windowdisplaymediaposition-top']['$t'] else 0
+                left:               if obj['gsx$item-windowdisplaymediaposition-left']['$t'] isnt '' then obj['gsx$item-windowdisplaymediaposition-left']['$t'] else 0
 
       # make sure the correct container array exists in the model
-      aWindow.model[key] = aWindow.model[key] or {}
+      heardApp.model[key] = heardApp.model[key] or {}
 
       # after cleaning things up save to the model
-      aWindow.model[key][tempCleanObj.normalized] = tempCleanObj
+      heardApp.model[key][tempCleanObj.normalized] = tempCleanObj
 
     processGeneral = (obj, key) ->
       # return the cleaned up bits
@@ -94,43 +99,50 @@ aWindow.modelBuildr = do ->
     # after the initial model is created, do some additional processing
     postProcessing = (callback) ->
       # add the root/homepage item
-      aWindow.model.meta.root =
+      heardApp.model.meta.root =
         type:         'meta'
         title:        'Root'
         normalized:   'root'
         description:  'This is the homepage.'
 
       # add the editions list page by collating info on each edition
-      aWindow.model.meta.editions =
+      heardApp.model.meta.editions =
         type:         'meta'
         title:        'Editions'
         normalized:   'editions'
         description:  'This is the Editions list.'
-        displayOrder: _.keys aWindow.model.edition
+        displayOrder: _.keys heardApp.model.edition
 
       # add the collaborators list page by collating info on each collaborator
-      aWindow.model.meta.collaborators =
+      heardApp.model.meta.collaborators =
         type:         'meta'
         title:        'Collaborators'
         normalized:   'collaborators'
         description:  'This is the Collaborators list.'
-        displayOrder: do _.keys(aWindow.model.collaborator).sort
+        displayOrder: do _.keys(heardApp.model.collaborator).sort
+
+      # add the collaborators list page by collating info on each collaborator
+      heardApp.model.meta.where =
+        type:         'meta'
+        title:        'Where'
+        normalized:   'where'
+        description:  'Where are we now?'
 
       # go through each item to collate the following lists: items > editions, collaborators > editions, items > collaborator
-      _.each aWindow.model.item, (value, key) ->
+      _.each heardApp.model.item, (value, key) ->
         # items > edition
-        aWindow.model.edition[value.edition].items.push key
+        heardApp.model.edition[value.edition].items.push key
         # collaborators > edition
-        aWindow.model.edition[value.edition].collaborators.push value.creator
+        heardApp.model.edition[value.edition].collaborators.push value.creator
         # items > collaborator
-        aWindow.model.collaborator[value.creator].items.push key
+        heardApp.model.collaborator[value.creator].items.push key
 
       # sort collated lists
-      _.each aWindow.model.edition, (value, key) ->
+      _.each heardApp.model.edition, (value, key) ->
         do value.collaborators.sort
         do value.items.sort
 
-      _.each aWindow.model.collaborator, (value, key) ->
+      _.each heardApp.model.collaborator, (value, key) ->
         do value.items.sort
 
       do callback
@@ -143,7 +155,7 @@ aWindow.modelBuildr = do ->
       postProcessing ->
         do callback
     else
-      aWindow.model =
+      heardApp.model =
         status: 'error'
         description: 'no "entry" object returned'
         data: data

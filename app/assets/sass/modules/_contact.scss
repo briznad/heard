@@ -72,12 +72,9 @@
 	}
 
 	[type="submit"] {
-		border: none;
 		position: absolute;
 		right: em(30, 19);
 		bottom: em(20, 19);
-		color: $color-white;
-		text-transform: uppercase;
 		font-size: em(19);
 		padding: em(6, 19) em(10, 19);
 	}

@@ -1,30 +1,12 @@
 // middle row
 .middle-row {
-	margin-bottom: em(20);
-	padding-bottom: em(20);
-	border-bottom: 1px solid #aaa;
-
-	.root &,
-	.contact & {
-		padding-bottom: 0;
-		border-bottom: none;
-	}
-
-	.editions &,
-	.collaborators & {
-		padding-bottom: 0;
-	}
+	margin: em(80) 0;
 }
 
 // shared between containers
 .media-container,
 .homepage-container {
 	min-height: em(450);
-}
-
-.media-container,
-.homepage-container {
-	border: 2px solid $color-border-dark;
 }
 
 .media-container {

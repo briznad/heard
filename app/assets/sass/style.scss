@@ -13,14 +13,17 @@
 
 // partials
 @import "partials/header";
-@import "partials/main";
+@import "partials/middle_row";
 @import "partials/footer";
 @import "partials/shared_styles";
 
 // modules
 @import "modules/homepage";
+@import "modules/full_width_image";
+@import "modules/item_edition";
 @import "modules/meta_list";
 @import "modules/contact";
+@import "modules/lightbox";
 
 /* /imports */
 

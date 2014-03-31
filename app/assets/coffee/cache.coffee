@@ -1,10 +1,12 @@
-aWindow = aWindow or {}
+heardApp = heardApp or {}
 
-aWindow.cache =
+heardApp.cache =
 
-  $window:    $(window)
-  $document:  $(document)
-  $html:      $(document.documentElement) # document.documentElement === 'html'
-  $body:      $(document.body)
+  $window:            $(window)
+  $document:          $(document)
+  $html:              $(document.documentElement) # document.documentElement === 'html'
+  $body:              $(document.body)
 
-  $title:     $('title')
+  $title:             $('title')
+  $h1:                $('h1')
+  $dynamicContainer:  $('#dynamicContainer')

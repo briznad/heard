@@ -1,68 +1,107 @@
-console.log "\nHeard API server is warming up...\n"
+console.log '\nHeard API server is warming up...\n'
 
 ###
-dependencies and what have you
+ load general depencies / global vars
 ###
-
-# load general depencies / global vars
 settings =
-  catchErrors: false
-  http_listen_port: 4327
+  mode: 'DEV'
+  # mode: 'PROD'
+  httpPort: 4327
 
-_ = require("underscore")
-express = require("express")
-cradle = require("cradle")
-app = express()
-conn = new (cradle.Connection)("127.0.0.1", 5984, # load cradle (couch API wrapper) dependencies / configs
+_       = require 'underscore'
+cradle  = require 'cradle'
+express = require 'express'
+app     = do express
+conn    = new (cradle.Connection) '127.0.0.1', 5984, # load cradle (couch API wrapper) dependencies / configs
   secure: false
   auth:
-    username: "heard"
-    password: "heardpass"
-)
+    username: 'heard'
+    password: 'heardpass'
 
-# load express middleware
-app.use express.bodyParser()
-app.use express.cookieParser()
+# specify our db
+db = conn.database 'heard';
 
-# locked & loaded!
-console.log "\n\n                        #####################\n                         H e a r d  -  A P I\n                        #####################\n"
+init = ->
+  # load express middleware
+  app.use express.bodyParser()
+  app.use express.cookieParser()
+
+  # init routes
+  do initRoutes
+
+  # have app listen
+  app.listen settings.httpPort
+
+  # server started
+  console.info '\nserver started at http://127.0.0.1:' + settings.httpPort
+
+  # ERROR catcher
+  if settings.mode is 'PROD'
+    console.info '\nPROD: errors will be caught and logged'
+    process.on 'uncaughtException', (err) ->
+      console.log '\nCaught the following exception:\n' + err
+  else
+    console.info '\nDEV: errors will NOT be caught'
+
+  # locked & loaded!
+  console.log '\n\n                  #####################\n                   H e a r d  -  A P I\n                  #####################\n'
 
 ###
 load routes
 ###
+routes =
+  'get' :
+    '/'     : 'root'
+    '/test' : 'test'
+    '/list' : 'listAll'
+  # 'put' :
+  #   '/update' : 'updateRequest'
+  'post' :
+    '/create' : 'createRequest'
 
-# test
-app.get "/test", (req, res) ->
-  console.log "OMG, a request!"
-  console.info "request made for:\n" + req.url
+initRoutes = ->
+  _.each routes, (value, key) ->
+    verb = key
+    _.each value, (value, key) ->
+      app[verb] key, routeHandlers[value]
 
-  # respond!!
-  res.json heardSays: "serving test!"
-  return
+routeHandlers =
+  root: (req, res) ->
+    console.log '\nOMG, a request!'
+    console.info 'request made for:\n' + req.url
 
+    # respond!!
+    res.json heardSays: 'Hello World!'
 
-# Hello World!
-app.get "/", (req, res) ->
-  console.log "OMG, a request!"
-  console.info "request made for:\n" + req.url
+  test: (req, res) ->
+    console.log '\nOMG, a request!'
+    console.info 'request made for:\n' + req.url
 
-  # respond!!
-  res.json heardSays: "Hello World!"
-  return
+    # respond!!
+    res.json heardSays: 'serving test!'
 
+  listAll: (req, res) ->
+    console.log '\nOMG, a request!'
+    console.info 'request made for:\n' + req.url
 
-###
-init and load helper functions
-###
+    db.get 'requests', (err, doc) ->
+      if err then res.json err
 
-# have app listen
-app.listen settings.http_listen_port
+      # respond!!
+      res.json doc
 
-# server started
-console.info "server started at http://127.0.0.1:" + settings.http_listen_port
+  createRequest: (req, res) ->
+    console.log '\nOMG, a request!'
+    console.info 'request made for:\n' + req.url
 
-# ERROR catcher
-if settings.catchErrors
-  process.on "uncaughtException", (err) ->
-    console.log "Caught the following exception: " + logNewLineResultsIndent + err
-    return
+    db.save
+      type    : 'request'
+      title   : req.body.title
+      message : req.body.message
+    , (err, doc) ->
+      if err then res.json err
+
+      # respond!!
+      res.json doc
+
+do init

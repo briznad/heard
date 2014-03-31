@@ -1,13 +1,31 @@
-aWindow = aWindow or {}
+heardApp = heardApp or {}
 
-aWindow.template =
+heardApp.template = do ->
+  'use strict'
 
-  primary: _.template $('#primaryTemplate').html()
+  init = (callback) ->
+    request = $.ajax
+      url: '/assets/templates/templates.html',
+      dataType: 'html',
 
-  contactPartial: _.template $('#contactPartial').html()
+    request.done (data) ->
+      processTemplates data, callback
 
-  homepageDisplayPartial: _.template $('#homepageDisplayPartial').html()
+    # uh-oh, something went wrong
+    request.fail (data) ->
+      heardApp.template =
+        status: 'error'
+        description: 'unable to retrieve template'
+        data: data
 
-  metaListPartial: _.template $('#metaListPartial').html()
+      do callback
 
-do $('script[type="text/html"]').remove
+  processTemplates = (response, callback) ->
+    $templates = $(response).filter('script[type="text/html"]')
+
+    $templates.each ->
+      heardApp.template[$(this).attr 'id'] = _.template $(this).html()
+
+    do callback
+
+  init: init

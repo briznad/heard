@@ -23,10 +23,10 @@ Davis = function (config) {
 /**
  * Stores the DOM library that Davis will use.  Can be overriden to use libraries other than jQuery.
  */
-if (window.Zepto) {
-  Davis.$ = Zepto
-} else if (window.jQuery) {
+if (window.jQuery) {
   Davis.$ = jQuery
+} else if (window.Zepto) {
+  Davis.$ = Zepto
 } else {
   Davis.$ = null
 };

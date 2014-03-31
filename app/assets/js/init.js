@@ -1,11 +1,12 @@
-var aWindow;
+var heardApp;
 
-aWindow = aWindow || {};
+heardApp = heardApp || {};
 
-aWindow.init = (function() {
+heardApp.init = (function() {
   'use strict';
-  aWindow.store = aWindow.store || aWindow.DB('heardApp');
-  return aWindow.modelBuildr.init(function() {
-    return aWindow.router();
+  return heardApp.template.init(function() {
+    return heardApp.modelBuildr.init(function() {
+      return heardApp.router.init();
+    });
   });
 })();

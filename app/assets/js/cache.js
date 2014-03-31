@@ -1,11 +1,13 @@
-var aWindow;
+var heardApp;
 
-aWindow = aWindow || {};
+heardApp = heardApp || {};
 
-aWindow.cache = {
+heardApp.cache = {
   $window: $(window),
   $document: $(document),
   $html: $(document.documentElement),
   $body: $(document.body),
-  $title: $('title')
+  $title: $('title'),
+  $h1: $('h1'),
+  $dynamicContainer: $('#dynamicContainer')
 };

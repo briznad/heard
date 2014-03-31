@@ -1,14 +1,14 @@
-var aWindow;
+var heardApp;
 
-aWindow = aWindow || {};
+heardApp = heardApp || {};
 
-aWindow.modelBuildr = (function() {
+heardApp.modelBuildr = (function() {
   'use strict';
-  var createCleanModel, getData, init;
+  var createCleanModel, init, _getData;
   init = function(callback) {
-    return getData(callback);
+    return callback();
   };
-  getData = function(callback) {
+  _getData = function(callback) {
     var contentSpreadsheetID, request;
     contentSpreadsheetID = '0AvY0yhzqHzgSdDRjV1UzcUxfQnRmSDNKcEhkUDlKeHc';
     request = $.ajax({
@@ -19,7 +19,7 @@ aWindow.modelBuildr = (function() {
       return createCleanModel(data, callback);
     });
     return request.fail(function(data) {
-      aWindow.model = {
+      heardApp.model = {
         status: 'error',
         description: 'unable to talk to Google',
         data: data
@@ -29,20 +29,23 @@ aWindow.modelBuildr = (function() {
   };
   createCleanModel = function(data, callback) {
     var postProcessing, processGeneral, sortRawInput;
-    aWindow.model = {};
+    heardApp.model = {};
     sortRawInput = function(obj) {
       var key, tempCleanObj;
       key = obj.gsx$newpagetype.$t;
       tempCleanObj = processGeneral(obj, key);
       switch (key) {
         case 'edition':
-          aWindow.model.settings = aWindow.model.settings || {};
-          aWindow.model.settings.currentEdition = tempCleanObj.normalized;
+          heardApp.model.settings = heardApp.model.settings || {};
+          heardApp.model.settings.currentEdition = tempCleanObj.normalized;
           tempCleanObj = _.extend(tempCleanObj, {
             items: [],
             collaborators: [],
-            location: obj['gsx$edition-location']['$t'].replace(/\n/g, '<br/>'),
-            hours: obj['gsx$edition-hours']['$t'].replace(/\n/g, '<br/>'),
+            location: {
+              address: obj['gsx$edition-location-address']['$t'],
+              media: obj['gsx$edition-location-media']['$t'],
+              description: obj['gsx$edition-location-description']['$t'].replace(/\n/g, '<br/>')
+            },
             contact: {
               email: obj['gsx$edition-contact-email']['$t'],
               phone: obj['gsx$edition-contact-phone']['$t']
@@ -59,6 +62,8 @@ aWindow.modelBuildr = (function() {
           tempCleanObj = _.extend(tempCleanObj, {
             creator: obj['gsx$item-creator']['$t'],
             edition: obj['gsx$item-edition']['$t'],
+            additionalMedia: obj['gsx$item-additionalmedia']['$t'] === '' ? false : obj['gsx$item-additionalmedia']['$t'].replace(/,\s/g, ',').split(','),
+            purchasePageMedia: obj['gsx$item-purchasepage-media']['$t'],
             price: obj['gsx$item-price']['$t'],
             madeToOrder: obj['gsx$item-madetoorder']['$t'] === 'TRUE' ? true : false,
             productionRun: obj['gsx$item-productionrun']['$t'],
@@ -72,8 +77,8 @@ aWindow.modelBuildr = (function() {
             }
           });
       }
-      aWindow.model[key] = aWindow.model[key] || {};
-      return aWindow.model[key][tempCleanObj.normalized] = tempCleanObj;
+      heardApp.model[key] = heardApp.model[key] || {};
+      return heardApp.model[key][tempCleanObj.normalized] = tempCleanObj;
     };
     processGeneral = function(obj, key) {
       return {
@@ -85,36 +90,42 @@ aWindow.modelBuildr = (function() {
       };
     };
     postProcessing = function(callback) {
-      aWindow.model.meta.root = {
+      heardApp.model.meta.root = {
         type: 'meta',
         title: 'Root',
         normalized: 'root',
         description: 'This is the homepage.'
       };
-      aWindow.model.meta.editions = {
+      heardApp.model.meta.editions = {
         type: 'meta',
         title: 'Editions',
         normalized: 'editions',
         description: 'This is the Editions list.',
-        displayOrder: _.keys(aWindow.model.edition)
+        displayOrder: _.keys(heardApp.model.edition)
       };
-      aWindow.model.meta.collaborators = {
+      heardApp.model.meta.collaborators = {
         type: 'meta',
         title: 'Collaborators',
         normalized: 'collaborators',
         description: 'This is the Collaborators list.',
-        displayOrder: _.keys(aWindow.model.collaborator).sort()
+        displayOrder: _.keys(heardApp.model.collaborator).sort()
       };
-      _.each(aWindow.model.item, function(value, key) {
-        aWindow.model.edition[value.edition].items.push(key);
-        aWindow.model.edition[value.edition].collaborators.push(value.creator);
-        return aWindow.model.collaborator[value.creator].items.push(key);
+      heardApp.model.meta.where = {
+        type: 'meta',
+        title: 'Where',
+        normalized: 'where',
+        description: 'Where are we now?'
+      };
+      _.each(heardApp.model.item, function(value, key) {
+        heardApp.model.edition[value.edition].items.push(key);
+        heardApp.model.edition[value.edition].collaborators.push(value.creator);
+        return heardApp.model.collaborator[value.creator].items.push(key);
       });
-      _.each(aWindow.model.edition, function(value, key) {
+      _.each(heardApp.model.edition, function(value, key) {
         value.collaborators.sort();
         return value.items.sort();
       });
-      _.each(aWindow.model.collaborator, function(value, key) {
+      _.each(heardApp.model.collaborator, function(value, key) {
         return value.items.sort();
       });
       return callback();
@@ -125,7 +136,7 @@ aWindow.modelBuildr = (function() {
         return callback();
       });
     } else {
-      aWindow.model = {
+      heardApp.model = {
         status: 'error',
         description: 'no "entry" object returned',
         data: data
